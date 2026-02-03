@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Test v1.2 🛠️</title>
+    <style>
+        :root { --pink: #ff4d8d; --soft: #fff0f5; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; background: #f4f4f9; overflow: hidden; transition: background 1s; }
+        
+        #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .floating-heart { position: absolute; color: var(--pink); opacity: 0.6; animation: float 4s linear infinite; }
+        @keyframes float { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
+
+        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 380px; text-align: center; z-index: 10; position: relative; }
+        .page { display: none; animation: fadeIn 0.5s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        h2 { color: #333; margin: 15px 0; }
+        .romance-text { color: var(--pink) !important; }
+        p { line-height: 1.5; color: #555; font-size: 0.95rem; }
+        
+        button { border: none; padding: 16px; border-radius: 15px; font-size: 16px; font-weight: bold; margin-top: 20px; width: 100%; cursor: pointer; transition: 0.3s; }
+        .blue-btn { background: #4a90e2; color: white; }
+        .pink-btn { background: var(--pink); color: white; border-radius: 30px; }
+        #noBtn { background: #eee; color: var(--pink); margin-top: 10px; }
+
+        .gif { width: 160px; border-radius: 15px; margin-bottom: 10px; }
+        .note { font-size: 0.75rem; font-style: italic; color: #888; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; text-align: left; }
+    </style>
+</head>
+<body id="bg">
+
+    <audio id="romanticSong">
+        <source src="forever.m4a" type="audio/mp4">
+    </audio>
+
+    <div id="hearts"></div>
+
+    <div class="card">
+        <div id="p1" class="page active">
+            <h1 style="font-size: 50px; margin:0;">💻</h1>
+            <h2>Layout Test v1.2</h2>
+            <p>Hey Favour! Hope your day is going great. Can you click the button to test this mobile transition?</p>
+            <button class="blue-btn" onclick="go(2)">Run Test Case</button>
+        </div>
+
+        <div id="p2" class="page">
+            <h1 style="font-size: 50px; margin:0;">📊</h1>
+            <h2>Processing...</h2>
+            <p>That worked! I actually coded a tiny secret into the next page. Want to see it?</p>
+            <button class="blue-btn" onclick="reveal()">Show Secret</button>
+        </div>
+
+        <div id="p3" class="page">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYxcXp0bm9ndHh6emx0Y2Z4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KztT2c4u8mYYUiMKdJ/giphy.gif" class="gif">
+            <h2 class="romance-text">Actually...</h2>
+            <p>This wasn't a project. I just wanted a special way to ask you something.</p>
+            <button class="pink-btn" onclick="go(4)">Keep reading... 🥺</button>
+        </div>
+
+        <div id="p4" class="page">
+            <h1 style="font-size: 50px; margin:0;">💖</h1>
+            <h2 class="romance-text">Favour...</h2>
+            <p style="font-size: 1.2rem; font-weight: bold;">Will you be my Valentine? 🥺🌹</p>
+            <button id="yesBtn" class="pink-btn" onclick="celebrate()">Yes! 💘</button>
+            <button id="noBtn" onclick="dodge()">No 🙈</button>
+        </div>
+
+        <div id="p5" class="page">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2Ria3h6Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4Zzh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/MDJ9IbxxvDUQM/giphy.gif" class="gif">
+            <h2 class="romance-text">YAYYYY! 🥰</h2>
+            <p>Can't believe you <strong>chose</strong> yes, hehe🥲😁❤️</p>
+            <p>I'm soooooooooooo looking forward to being with you. Thank youuuuu!</p>
+            <p style="font-weight: bold;">Much love from meeeee😁❤️</p>
+            
+            <div class="note">
+                I wasn't able to recover our recordings/songs, they were all on my old device, I've not been able to get 'em back😔, pleasee manage this, thank youuu
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function go(num) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('p' + num);
+            if (target) target.classList.add('active');
+        }
+
+        function reveal() {
+            document.getElementById('bg').style.background = '#fff0f5';
+            go(3);
+            startHearts();
+        }
+
+        let scale = 1;
+        function dodge() {
+            scale += 0.8;
+            document.getElementById('yesBtn').style.transform = "scale(" + scale + ")";
+            document.getElementById('noBtn').innerHTML = "Try again! 😉";
+        }
+
+        function celebrate() {
+            // SAFE MUSIC TRIGGER
+            const song = document.getElementById('romanticSong');
+            if (song) {
+                song.play().catch(function(e) {
+                    console.log("Music blocked or missing, but page will still work!");
+                });
+            }
+
+            go(5);
+            for(let i=0; i<30; i++) {
+                setTimeout(createHeart, i * 150);
+            }
+        }
+
+        function startHearts() { setInterval(createHeart, 600); }
+        function createHeart() {
+            const h = document.createElement('div');
+            h.classList.add('floating-heart');
+            h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            h.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.getElementById('hearts').appendChild(h);
+            setTimeout(() => h.remove(), 4000);
+        }
+    </script>
+</body>
+      </html>
+  
